@@ -7,8 +7,8 @@ import json
 import time
 
 subBroker = "localhost"
-subTopic = ['device/device_register', 'device/device_operate', 'device/status_update']
-subUrl = ['http://localhost/index.php/mqtt/sub/register', 'http://localhost/index.php/mqtt/sub/operate', 'http://localhost/index.php/mqtt/sub/update']
+subTopic = ['device/device_register', 'device/device_operate', 'device/status_update', 'device/status_reply']
+subUrl = ['http://localhost/index.php/mqtt/sub/register', 'http://localhost/index.php/mqtt/sub/operate', 'http://localhost/index.php/mqtt/sub/update', 'http://localhost/index.php/mqtt/sub/overall']
 
 def on_message(mq, userdata, msg):
     print("topic: " + msg.topic + " " + "msg: " + msg.payload)
@@ -20,6 +20,9 @@ def on_message(mq, userdata, msg):
 
     if(msg.topic == subTopic[2]):
         requests.post(subUrl[2], msg.payload)
+
+    if(msg.topic == subTopic[3]):
+        requests.post(subUrl[3], msg.payload)
 
 class Sub:
     __topic = ""
