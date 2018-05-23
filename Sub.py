@@ -38,6 +38,7 @@ class Sub:
         self.__mqttClient.subscribe(self.__topic[0])
         self.__mqttClient.subscribe(self.__topic[1])
         self.__mqttClient.subscribe(self.__topic[2])
+        self.__mqttClient.subscribe(self.__topic[3])
         self.__mqttClient.on_message = on_message
         self.__mqttClient.loop_forever()
 
