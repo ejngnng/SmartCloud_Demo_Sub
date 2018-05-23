@@ -7,8 +7,19 @@ import json
 import time
 
 subBroker = "localhost"
-subTopic = ['device/device_register', 'device/device_operate', 'device/status_update', 'device/status_reply']
-subUrl = ['http://localhost/index.php/mqtt/sub/register', 'http://localhost/index.php/mqtt/sub/operate', 'http://localhost/index.php/mqtt/sub/update', 'http://localhost/index.php/mqtt/sub/overall']
+subTopic = ['device/device_register', 
+            'device/device_operate', 
+            'device/status_update', 
+            'device/status_reply', 
+            'device/device_deleted', 
+            'device/hardware_reset',
+            'device/heartbeat'
+]
+subUrl = ['http://localhost/index.php/mqtt/sub/register', 
+          'http://localhost/index.php/mqtt/sub/operate', 
+          'http://localhost/index.php/mqtt/sub/update', 
+          'http://localhost/index.php/mqtt/sub/overall']
+
 
 def on_message(mq, userdata, msg):
     print("topic: " + msg.topic + " " + "msg: " + msg.payload)
@@ -39,6 +50,9 @@ class Sub:
         self.__mqttClient.subscribe(self.__topic[1])
         self.__mqttClient.subscribe(self.__topic[2])
         self.__mqttClient.subscribe(self.__topic[3])
+        self.__mqttClient.subscribe(self.__topic[4])
+        self.__mqttClient.subscribe(self.__topic[5])
+        self.__mqttClient.subscribe(self.__topic[6])
         self.__mqttClient.on_message = on_message
         self.__mqttClient.loop_forever()
 
