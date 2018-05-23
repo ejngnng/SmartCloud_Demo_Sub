@@ -5,6 +5,7 @@ import paho.mqtt.client as mqtt
 import requests
 import json
 import time
+import threading
 
 subBroker = "localhost"
 subTopic = ['device/device_register', 
@@ -19,6 +20,9 @@ subUrl = ['http://localhost/index.php/mqtt/sub/register',
           'http://localhost/index.php/mqtt/sub/overall',
           'http://localhost/index.php/mqtt/sub/stateNotify']
 
+aliveUrl = "http://localhost/index.php/mqtt/sub/alive"
+
+hbInterval = 5.0
 
 def on_message(mq, userdata, msg):
     print("topic: " + msg.topic + " " + "msg: " + msg.payload)
@@ -56,13 +60,18 @@ class Sub:
         self.__mqttClient.on_message = on_message
         self.__mqttClient.loop_forever()
 
-
+def heartbeat():
+    print("alive check...")
+    requests.post(aliveUrl, "time out")
+    global t
+    t = threading.Timer(hbInterval, heartbeat)
+    t.start()
 
 def main():
+    t = threading.Timer(hbInterval, heartbeat)
+    t.start()
     register = Sub(subBroker)
     register.start()
-
-
 
 
 if __name__ == '__main__':
