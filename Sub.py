@@ -11,14 +11,13 @@ subTopic = ['device/device_register',
             'device/device_operate', 
             'device/status_update', 
             'device/status_reply', 
-            'device/device_deleted', 
-            'device/hardware_reset',
-            'device/heartbeat'
+            'device/state_notify'
 ]
 subUrl = ['http://localhost/index.php/mqtt/sub/register', 
           'http://localhost/index.php/mqtt/sub/operate', 
           'http://localhost/index.php/mqtt/sub/update', 
-          'http://localhost/index.php/mqtt/sub/overall']
+          'http://localhost/index.php/mqtt/sub/overall',
+          'http://localhost/index.php/mqtt/sub/stateNotify']
 
 
 def on_message(mq, userdata, msg):
@@ -34,6 +33,9 @@ def on_message(mq, userdata, msg):
 
     if(msg.topic == subTopic[3]):
         requests.post(subUrl[3], msg.payload)
+
+    if(msg.topic == subTopic[4]):
+        requests.post(subUrl[4], msg.payload)
 
 class Sub:
     __topic = ""
@@ -51,8 +53,6 @@ class Sub:
         self.__mqttClient.subscribe(self.__topic[2])
         self.__mqttClient.subscribe(self.__topic[3])
         self.__mqttClient.subscribe(self.__topic[4])
-        self.__mqttClient.subscribe(self.__topic[5])
-        self.__mqttClient.subscribe(self.__topic[6])
         self.__mqttClient.on_message = on_message
         self.__mqttClient.loop_forever()
 
