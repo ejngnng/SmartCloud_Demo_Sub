@@ -68,8 +68,8 @@ def heartbeat():
     t.start()
 
 def main():
-    t = threading.Timer(hbInterval, heartbeat)
-    t.start()
+#    t = threading.Timer(hbInterval, heartbeat)
+#    t.start()
     register = Sub(subBroker)
     register.start()
 
